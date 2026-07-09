@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/fonts/CabinetGrotesk-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/fonts/CabinetGrotesk-800.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/fonts/CabinetGrotesk-900.woff2") format("woff2");
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sentient";
+  src: url("/fonts/Sentient-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sentient";
+  src: url("/fonts/Sentient-400Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sentient";
+  src: url("/fonts/Sentient-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sentient";
+  src: url("/fonts/Sentient-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --ink: #0d0a07;
+  --ink-2: #161009;
+  --ink-3: #221708;
+  --gold: #d9a63f;
+  --gold-soft: #ecc678;
+  --rojo: #c0392b;
+  --cream: #f4ead8;
+  --muted: #a89577;
+  --line: rgba(217, 166, 63, 0.16);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink-2);
+  --color-ink3: var(--ink-3);
+  --color-gold: var(--gold);
+  --color-goldsoft: var(--gold-soft);
+  --color-rojo: var(--rojo);
+  --color-cream: var(--cream);
+  --color-muted: var(--muted);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: "Sentient", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: "Cabinet Grotesk", system-ui, sans-serif;
+}
+
+.hairline {
+  border-color: var(--line);
+}
+
+.gold-kicker {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-family: "Cabinet Grotesk", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+/* pole-stripe: thin diagonal barber stripe used as section rule, brand-made */
+.pole-rule {
+  height: 6px;
+  background: repeating-linear-gradient(
+    -55deg,
+    var(--rojo) 0 10px,
+    var(--cream) 10px 20px,
+    #2c4a77 20px 30px,
+    var(--cream) 30px 40px
+  );
+  opacity: 0.85;
+  border-radius: 999px;
+}
+
+.img-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+.img-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(13, 10, 7, 0.55));
+  pointer-events: none;
+}
+
+.map-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.map-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(217, 166, 63, 0.1);
+  pointer-events: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  opacity: 0;
+}
+.rise.in {
+  animation: rise 0.7s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
