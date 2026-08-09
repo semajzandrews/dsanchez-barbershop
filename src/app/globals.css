@@ -168,3 +168,35 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* walk-up: a blank in the shop's sentence. Unfilled it reads as a ruled gap,
+   filled it reads as the customer's own words in gold. */
+.walkup-slot {
+  display: inline;
+  font: inherit;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0 0.12em;
+  cursor: pointer;
+  border-bottom: 3px dashed rgba(217, 166, 63, 0.5);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.walkup-slot:hover {
+  color: var(--gold-soft);
+  border-bottom-color: var(--gold);
+}
+.walkup-slot.is-filled {
+  color: var(--gold);
+  border-bottom-style: solid;
+  border-bottom-color: var(--gold);
+}
+.walkup-slot.is-open {
+  color: var(--cream);
+  border-bottom-color: var(--rojo);
+}
+.walkup-slot:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}

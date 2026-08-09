@@ -5,7 +5,18 @@ import { useEffect, useRef, useState } from "react";
 import type { Lang } from "@/lib/i18n";
 import { copy } from "@/lib/i18n";
 import GuardDial from "@/components/GuardDial";
-import BookingDemo from "@/components/BookingDemo";
+import WalkUp, { WALKUP_EVENT } from "@/components/WalkUp";
+import { SERVICES, type ServiceId } from "@/lib/shop";
+
+/**
+ * Every book affordance on the page goes through here: a real button that opens
+ * the walk-up flow, optionally answering the first blank. Never a phone link,
+ * because a control that says book must book. The phone stays beside it as its
+ * own action, labelled Call.
+ */
+function openWalkUp(service?: ServiceId) {
+  window.dispatchEvent(new CustomEvent(WALKUP_EVENT, { detail: service }));
+}
 
 const TEL = "tel:+18622527966";
 const MAP_SRC =
@@ -69,7 +80,9 @@ export default function Site() {
           <div className="hidden items-center gap-6 text-sm text-cream/80 md:flex">
             <a href="#services" className="hover:text-gold">{t.nav.services}</a>
             <a href="#shop" className="hover:text-gold">{t.nav.shop}</a>
-            <a href="#booking" className="hover:text-gold">{t.nav.booking}</a>
+            <button type="button" onClick={() => openWalkUp()} className="hover:text-gold">
+              {t.nav.booking}
+            </button>
             <a href="#visit" className="hover:text-gold">{t.nav.visit}</a>
           </div>
           <div className="flex items-center gap-2.5">
@@ -102,13 +115,14 @@ export default function Site() {
             </h1>
             <p className="mt-5 max-w-lg text-lg text-muted">{t.hero.sub}</p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href={TEL}
+              <button
+                type="button"
+                onClick={() => openWalkUp()}
                 className="font-display rounded-full bg-gold px-7 py-4 text-sm font-black uppercase tracking-wide text-ink shadow-[0_10px_40px_rgba(217,166,63,0.25)] transition hover:bg-goldsoft"
               >
                 {t.hero.cta}
-              </a>
-              <a href="#booking" className="font-display text-sm font-bold text-cream/85 underline decoration-gold decoration-2 underline-offset-8 hover:text-gold">
+              </button>
+              <a href={TEL} className="font-display text-sm font-bold text-cream/85 underline decoration-gold decoration-2 underline-offset-8 hover:text-gold">
                 {t.hero.cta2}
               </a>
             </div>
@@ -143,15 +157,25 @@ export default function Site() {
           <h2 className="font-display mt-3 text-4xl font-extrabold sm:text-5xl">{t.services.title}</h2>
           <p className="mt-4 max-w-xl text-muted">{t.services.sub}</p>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {t.services.items.map((s, i) => (
-              <Reveal key={i}>
-                <div className="h-full rounded-2xl border hairline bg-ink p-6 transition hover:border-gold/40">
-                  <div className="font-display text-sm font-black text-rojo">{String(i + 1).padStart(2, "0")}</div>
-                  <h3 className="font-display mt-2 text-xl font-extrabold">{s.name}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{s.desc}</p>
-                </div>
-              </Reveal>
-            ))}
+            {SERVICES.map((svc, i) => {
+              const s = t.services.items[svc.id];
+              return (
+                <Reveal key={svc.id}>
+                  <div className="flex h-full flex-col rounded-2xl border hairline bg-ink p-6 transition hover:border-gold/40">
+                    <div className="font-display text-sm font-black text-rojo">{String(i + 1).padStart(2, "0")}</div>
+                    <h3 className="font-display mt-2 text-xl font-extrabold">{s.name}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{s.desc}</p>
+                    <button
+                      type="button"
+                      onClick={() => openWalkUp(svc.id)}
+                      className="font-display mt-5 self-start rounded-full border border-gold/60 px-4 py-2 text-xs font-black uppercase tracking-wide text-gold transition hover:bg-gold hover:text-ink"
+                    >
+                      {t.services.pick}
+                    </button>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-3">
@@ -202,8 +226,8 @@ export default function Site() {
         </div>
       </section>
 
-      {/* Booking demo */}
-      <BookingDemo lang={lang} />
+      {/* The walk-up */}
+      <WalkUp lang={lang} />
 
       {/* Visit */}
       <section id="visit" className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
